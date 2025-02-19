@@ -1,6 +1,6 @@
 {
   "name": "social-account-checker",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "A package to validate social media accounts.",
   "main": "index.js",
   "scripts": {
