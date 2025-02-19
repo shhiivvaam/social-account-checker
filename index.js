@@ -96,6 +96,8 @@ async function validateSocialMediaLink(url, platform) {
     }
 }
 
+module.exports = validateSocialMediaLink;
+
 // (async () => {
 //     const instagramLink = 'https://www.instagram.com/shhiivvaam';
 //     const facebookLink = 'https://www.facebook.com/shhiivvaam';
