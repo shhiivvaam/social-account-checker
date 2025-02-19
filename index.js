@@ -96,7 +96,23 @@ async function validateSocialMediaLink(url, platform) {
     }
 }
 
-module.exports = validateSocialMediaLink;
+async function checkAccount(platform, username) {
+    switch (platform.toLowerCase()) {
+        case 'instagram':
+            return await checkInstagramAccount(username);
+        case 'facebook':
+            return await checkFacebookAccount(username);
+        case 'twitter':
+            return await checkTwitterAccount(username);
+        default:
+            throw new Error(`Unsupported platform: ${platform}`);
+    }
+}
+
+module.exports = {
+    validateSocialMediaLink,
+    checkAccount
+};
 
 // (async () => {
 //     const instagramLink = 'https://www.instagram.com/shhiivvaam';
