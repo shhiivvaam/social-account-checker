@@ -96,12 +96,12 @@ async function validateSocialMediaLink(url, platform) {
     }
 }
 
-(async () => {
-    const instagramLink = 'https://www.instagram.com/shhiivvaam';
-    const facebookLink = 'https://www.facebook.com/shhiivvaam';
-    const twitterLink = 'https://twitter.com/shhiivvaam';
+// (async () => {
+//     const instagramLink = 'https://www.instagram.com/shhiivvaam';
+//     const facebookLink = 'https://www.facebook.com/shhiivvaam';
+//     const twitterLink = 'https://twitter.com/shhiivvaam';
 
-    console.log(await validateSocialMediaLink(instagramLink, 'instagram'));
-    console.log(await validateSocialMediaLink(facebookLink, 'facebook'));
-    console.log(await validateSocialMediaLink(twitterLink, 'twitter'));
-})();
+//     console.log(await validateSocialMediaLink(instagramLink, 'instagram'));
+//     console.log(await validateSocialMediaLink(facebookLink, 'facebook'));
+//     console.log(await validateSocialMediaLink(twitterLink, 'twitter'));
+// })();
