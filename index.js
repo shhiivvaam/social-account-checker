@@ -37,30 +37,53 @@ async function checkInstagramAccount(username) {
     return { exists: false, message: `The Instagram account @${username} does not exist.` };
 }
 
+// async function checkFacebookAccount(username) {
+//     const browser = await puppeteer.launch({ headless: false, args: ['--no-sandbox'] });
+//     const page = await browser.newPage();
+//     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) ...');
+
+//     try {
+//         await page.goto(`https://www.facebook.com/${username}`, { waitUntil: 'domcontentloaded' });
+
+//         const isLoginPage = await page.$('input[name="email"]') !== null;
+//         if (isLoginPage) return { exists: false, message: 'Login wall encountered' };
+
+//         const metaUrl = await page.$eval('meta[property="og:url"]', el => el?.content).catch(() => '');
+//         if (metaUrl.includes(username)) return { exists: true, message: `The Facebook account @${username} exists.` };
+
+//         const errorMsg = await page.$eval('div[aria-label="Content Not Found"]', el => el?.innerText).catch(() => '');
+//         if (errorMsg) return { exists: false, message: `The Facebook account @${username} does not exist.` };
+//     } finally {
+//         await browser.close();
+//     }
+//     return { exists: false, message: `The Facebook account @${username} does not exist.` };
+// }
+
 async function checkFacebookAccount(username) {
-    const browser = await puppeteer.launch({ headless: false, args: ['--no-sandbox'] });
-    const page = await browser.newPage();
-    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) ...');
+    const url = `https://www.facebook.com/${username}/`;
 
     try {
-        await page.goto(`https://www.facebook.com/${username}`, { waitUntil: 'domcontentloaded' });
-        
-        const isLoginPage = await page.$('input[name="email"]') !== null;
-        if (isLoginPage) return { exists: false, message: 'Login wall encountered' };
+        const response = await axios.get(url);
+        if (response.status === 200) {
+            const $ = cheerio.load(response.data);
+            const metaUrl = $('meta[property="og:url"]').attr('content') || '';
 
-        const metaUrl = await page.$eval('meta[property="og:url"]', el => el?.content).catch(() => '');
-        if (metaUrl.includes(username)) return { exists: true, message: `The Facebook account @${username} exists.` };
-
-        const errorMsg = await page.$eval('div[aria-label="Content Not Found"]', el => el?.innerText).catch(() => '');
-        if (errorMsg) return { exists: false, message: `The Facebook account @${username} does not exist.` };
-    } finally {
-        await browser.close();
+            if (metaUrl.includes(username)) {
+                return { exists: true, message: `The Facebook account @${username} exists.` };
+            }
+        }
+    } catch (error) {
+        if (error.response && error.response.status === 404) {
+            return { exists: false, message: `The Facebook account @${username} does not exist.` };
+        } else {
+            return { exists: false, message: `Error checking account: ${error.message}` };
+        }
     }
     return { exists: false, message: `The Facebook account @${username} does not exist.` };
 }
 
 async function checkTwitterAccount(username) {
-    const browser = await puppeteer.launch({ headless: false });
+    const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
 
     try {
